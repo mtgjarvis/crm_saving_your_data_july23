@@ -90,9 +90,23 @@ class CRM:
 
   #
   def search_by_attribute(self):
-    select_attribute = input('Enter the attribue you would like search by, first name, last name, email or note: ')
-    select_term_to_search = input('Enter the term you would like to find: ')
-    print(Contact.find_by(select_attribute, select_term_to_search))
+    #   contact_id = input('What ID are you looking for? ')
+    #   contact = Contact.get(contact_id)
+    #   print("ID {}, First Name {}, Last Name {}, Email {}, Note {}".format(contact.id, contact.first_name, contact.last_name, contact.email, contact.note))
+
+    attribute = input('Enter the attribue you would like search by, first name, last name, email or note: ').lower()
+    term_to_search = input('Enter the term you would like to find: ').lower()
+    if attribute == 'first name':
+        result = Contact.select().where(Contact.first_name == term_to_search).get()
+    elif attribute == 'last name':
+        result = Contact.select().where(Contact.last_name == term_to_search).get()
+    elif attribute == 'email':
+        result = Contact.select().where(Contact.email == term_to_search).get()
+    elif attribute == 'note':
+        result = Contact.select().where(Contact.note == term_to_search).get()
+    print(result)
+
+        # result = Contact.select().where(Contact.first_name == term_to_search).get()
 
 crm_app = CRM()
 crm_app.main_menu()
