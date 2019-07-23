@@ -1,5 +1,5 @@
-
 from contact import Contact
+
 
 
 class CRM:
@@ -29,8 +29,7 @@ class CRM:
     elif user_selected == 3:
       self.delete_contact()
     elif user_selected == 4:
-        for contact in Contact.select():
-            print(contact.first_name)
+      self.display_all_contacts()
     elif user_selected == 5:
       self.search_by_attribute()
     elif user_selected == 6:
@@ -54,26 +53,40 @@ class CRM:
     note = input().lower() 
 
     contact = Contact.create(
-        first_name = first_name,
-        last_name = last_name,
-        email = email,
-        note = note
+    first_name = first_name,
+    last_name = last_name,
+    email = email,
+    note = note
     )
   #
   #
   def modify_existing_contact(self):
     contact_id = int(input('Which id would you like to change?'))
-    # contact_to_modify = Contact.find(contact_id)
+    contact = Contact.get(Contact.id == contact_id)
     attribute_to_update = input('Please enter which attribute you would like to update: first name, last name, email, or note: ').lower()
     new_data = input(f'Enter the new info for {attribute_to_update}: ').lower()
-    Contact.contacts[contact_id - 1].update(attribute_to_update, new_data)
-  #
+    if attribute_to_update == 'first name':
+        contact.first_name = new_data
+        contact.save()
+    elif attribute_to_update == 'last name':
+        contact.last_name = new_data
+        contact.save()
+    elif attribute_to_update == 'email':
+        contact.email = new_data
+        contact.save()
+    elif attribute_to_update == 'note':
+        contact.note = new_data
+        contact.save()
   #
   def delete_contact(self):
     id_to_delete = int(input('Enter the index number you would like to delete: '))
-    Contact.delete(id_to_delete - 1)
+    contact = Contact.get(Contact.id == id_to_delete)
+    contact.delete_instance(Contact.get)    
 
-
+  def display_all_contacts(self):
+    all_contacts = Contact.select()
+    for contact in all_contacts:
+      print("ID {}, First Name {}, Last Name {}, Email {}, Note {}".format(contact.id, contact.first_name.capitalize(), contact.last_name.capitalize(), contact.email, contact.note.capitalize()))
 
   #
   def search_by_attribute(self):
