@@ -1,5 +1,5 @@
 
-
+from contact import Contact
 
 
 class CRM:
@@ -29,7 +29,8 @@ class CRM:
     elif user_selected == 3:
       self.delete_contact()
     elif user_selected == 4:
-      self.display_all_contacts()
+        for contact in Contact.select():
+            print(contact.first_name)
     elif user_selected == 5:
       self.search_by_attribute()
     elif user_selected == 6:
@@ -52,8 +53,12 @@ class CRM:
     print('Enter a Note: ')
     note = input().lower() 
 
-    contact = Contact.create(first_name, last_name, email, note)
-    return contact
+    contact = Contact.create(
+        first_name = first_name,
+        last_name = last_name,
+        email = email,
+        note = note
+    )
   #
   #
   def modify_existing_contact(self):
@@ -68,11 +73,7 @@ class CRM:
     id_to_delete = int(input('Enter the index number you would like to delete: '))
     Contact.delete(id_to_delete - 1)
 
-  def display_all_contacts(self):
-    all_contacts = Contact.all()
-    for contact in all_contacts:
-      print(contact)
-    print('')
+
 
   #
   def search_by_attribute(self):
